@@ -32,7 +32,9 @@ class FlutterJsHomeScreen extends StatefulWidget {
 class _FlutterJsHomeScreenState extends State<FlutterJsHomeScreen> {
   String _jsResult = '';
 
-  final JavascriptRuntime javascriptRuntime = getJavascriptRuntime();
+  final JavascriptRuntime javascriptRuntime = getJavascriptRuntime(useFlutterPrint: true);
+
+  
 
   String? _quickjsVersion;
 
@@ -40,6 +42,7 @@ class _FlutterJsHomeScreenState extends State<FlutterJsHomeScreen> {
   bool _processInitialized = false;
   String evalJS() {
     String jsResult = javascriptRuntime.evaluate("""
+            console.log(1,2,3,{a:1,b:2});
             if (typeof MyClass == 'undefined') {
               var MyClass = class  {
                 constructor(id) {
@@ -67,6 +70,9 @@ class _FlutterJsHomeScreenState extends State<FlutterJsHomeScreen> {
     //   print('ConsoleLog2 (Dart Side): $args');
     //   return json.encode(args);
     // });
+
+    javascriptRuntime.onMessage('ConsoleLog', (args) => print('KKK' + args.toString()));
+    
   }
 
   @override
@@ -78,6 +84,8 @@ class _FlutterJsHomeScreenState extends State<FlutterJsHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('FlutterJS Example'),
